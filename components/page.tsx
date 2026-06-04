@@ -4,8 +4,7 @@
 // Thin composition root. All logic and markup live in components/.
 // The <style> tag renders the original CSS exactly once at the top level.
 
-import { globalStyles } from "@/components/styles";
-import Dashboard from "@/components/Dashboard";
+import { globalStyles } from "@/lib/styles";
 import Navbar      from "@/components/Navbar";
 import Hero        from "@/components/Hero";
 import TrustStrip  from "@/components/TrustStrip";
@@ -26,10 +25,9 @@ export default function Page() {
       <Navbar />
 
       <main>
-  <Hero />
-  <Dashboard />
-  <TrustStrip />
-</main>
+        <Hero />
+        <TrustStrip />
+      </main>
 
       <Footer />
     </>
