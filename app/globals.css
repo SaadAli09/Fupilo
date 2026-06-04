@@ -1,26 +1,132 @@
-@import "tailwindcss";
+/* styles/globals.css
+   Design tokens + resets consumed by app/layout.tsx
+   ─────────────────────────────────────────────────── */
 
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Design tokens ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-deep:        #060611;
+  --bg-mid:         #0b0b1e;
+  --blue:           #3b82f6;
+  --blue-light:     #60a5fa;
+  --purple:         #8b5cf6;
+  --purple-light:   #a78bfa;
+  --cyan:           #22d3ee;
+  --pink:           #f472b6;
+  --green:          #4ade80;
+  --gold:           #fbbf24;
+  --text:           #f0f0ff;
+  --text-muted:     #8888aa;
+  --glass-bg:       rgba(255, 255, 255, 0.04);
+  --glass-border:   rgba(255, 255, 255, 0.09);
+  --glow-blue:      rgba(59, 130, 246, 0.35);
+  --glow-purple:    rgba(139, 92, 246, 0.35);
+  --radius-lg:      18px;
+  --radius-md:      12px;
+  --radius-sm:      8px;
+  --font-head:      'Syne', sans-serif;
+  --font-body:      'DM Sans', sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ── Base ── */
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background:    var(--bg-deep);
+  color:         var(--text);
+  font-family:   var(--font-body);
+  min-height:    100vh;
+  overflow-x:    hidden;
 }
+
+/* Noise texture overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar              { width: 6px; }
+::-webkit-scrollbar-track        { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb        { background: rgba(139, 92, 246, 0.4); border-radius: 3px; }
+
+/* ── Shared button styles ── */
+.btn-primary {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            8px;
+  background:     linear-gradient(135deg, var(--blue) 0%, var(--purple) 100%);
+  color:          #fff;
+  font-family:    var(--font-body);
+  font-weight:    600;
+  font-size:      0.95rem;
+  padding:        14px 28px;
+  border-radius:  var(--radius-sm);
+  border:         none;
+  cursor:         pointer;
+  text-decoration: none;
+  box-shadow:     0 0 40px rgba(139,92,246,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+  transition:     all 0.3s;
+  position:       relative;
+  overflow:       hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.btn-primary:hover              { transform: translateY(-2px); box-shadow: 0 0 60px rgba(139,92,246,0.6), inset 0 1px 0 rgba(255,255,255,0.15); }
+.btn-primary:hover::after       { opacity: 1; }
+
+.btn-secondary {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            8px;
+  background:     var(--glass-bg);
+  border:         1px solid var(--glass-border);
+  color:          var(--text);
+  font-family:    var(--font-body);
+  font-weight:    500;
+  font-size:      0.95rem;
+  padding:        14px 28px;
+  border-radius:  var(--radius-sm);
+  cursor:         pointer;
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+  transition:     all 0.3s;
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
+
+.btn-ghost {
+  background:    none;
+  border:        1px solid var(--glass-border);
+  color:         var(--text-muted);
+  padding:       8px 18px;
+  border-radius: 8px;
+  font-family:   var(--font-body);
+  font-size:     0.875rem;
+  font-weight:   500;
+  cursor:        pointer;
+  transition:    all 0.2s;
+}
+.btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.2); background: var(--glass-bg); }
+
+.btn-icon { font-size: 1.1em; }
+
+/* ── Shared animations ── */
+@keyframes fadeUp  { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse   { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
+@keyframes driftA  { from { transform: translate(0,0) scale(1);    } to { transform: translate(60px,40px) scale(1.1);    } }
+@keyframes driftB  { from { transform: translate(0,0) scale(1.05); } to { transform: translate(-50px,30px) scale(0.95); } }
+@keyframes driftC  { from { transform: translate(0,0);              } to { transform: translate(30px,-40px);              } }
+@keyframes floatA  { 0%,100%{ transform: translateY(0) rotate(-2deg);  } 50%{ transform: translateY(-10px) rotate(-1deg);  } }
+@keyframes floatB  { 0%,100%{ transform: translateY(0) rotate(1.5deg); } 50%{ transform: translateY(8px)   rotate(0.5deg); } }
