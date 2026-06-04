@@ -66,6 +66,8 @@ function TrustStat({
 }
 
 // ── Hero (main export) ────────────────────────────────────────
+import Link from "next/link";
+
 export default function Hero() {
   return (
     <section className="hero">
@@ -90,9 +92,10 @@ export default function Hero() {
         </p>
 
         <div className="hero-ctas">
-          <a href="#" className="btn-primary">
-            <span className="btn-icon">⚡</span> Explore Tools
-          </a>
+          <Link href="/tools" className="btn-primary">
+  <span className="btn-icon">⚡</span>
+  Explore Tools
+</Link>
           <a href="#" className="btn-secondary">
             <span className="btn-icon">★</span> View Reviews
           </a>
